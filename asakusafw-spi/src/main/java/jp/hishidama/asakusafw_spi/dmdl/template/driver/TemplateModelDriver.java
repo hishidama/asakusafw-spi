@@ -100,11 +100,13 @@ public class TemplateModelDriver extends ModelAttributeDriver {
 		assert name != null;
 		assert stringLiteral.kind == LiteralKind.STRING;
 		if (stringLiteral == null) {
-			environment.report(new Diagnostic(Level.ERROR, stringLiteral, "empty element", TARGET_NAME, name));
+			environment.report(new Diagnostic(Level.ERROR, stringLiteral, "@{0}({1}) must not be empty", TARGET_NAME,
+					name));
 			return false;
 		}
 		if (stringLiteral.toStringValue().isEmpty()) {
-			environment.report(new Diagnostic(Level.ERROR, stringLiteral, "empty element", TARGET_NAME, name));
+			environment.report(new Diagnostic(Level.ERROR, stringLiteral, "@{0}({1}) must not be empty", TARGET_NAME,
+					name));
 			return false;
 		}
 		return true;
@@ -121,14 +123,14 @@ public class TemplateModelDriver extends ModelAttributeDriver {
 			return null;
 		}
 		if (!(element.value instanceof AstLiteral)) {
-			environment.report(new Diagnostic(Level.ERROR, element, "invalid LiteralKind", TARGET_NAME, elementName,
-					kind));
+			environment.report(new Diagnostic(Level.ERROR, element, "@{0}({1}) must be a {2} literal", TARGET_NAME,
+					elementName, kind));
 			return null;
 		}
 		AstLiteral literal = (AstLiteral) element.value;
 		if (literal.kind != kind) {
-			environment.report(new Diagnostic(Level.ERROR, element, "invalid LiteralKind", TARGET_NAME, elementName,
-					kind));
+			environment.report(new Diagnostic(Level.ERROR, element, "@{0}({1}) must be a {2} literal", TARGET_NAME,
+					elementName, kind));
 			return null;
 		}
 		return literal;
@@ -139,12 +141,13 @@ public class TemplateModelDriver extends ModelAttributeDriver {
 		assert environment != null;
 		assert elements != null;
 		assert elementName != null;
+		LiteralKind kind = LiteralKind.STRING;
 		AstAttributeElement element = elements.remove(elementName);
 		if (element == null) {
 			return null;
 		}
 		if (!(element.value instanceof AstAttributeValueArray)) {
-			environment.report(new Diagnostic(Level.ERROR, element, "invalid AstAttributeValueArray", TARGET_NAME,
+			environment.report(new Diagnostic(Level.ERROR, element, "@{0}({1}) must be a array literal", TARGET_NAME,
 					elementName));
 			return null;
 		}
@@ -152,15 +155,21 @@ public class TemplateModelDriver extends ModelAttributeDriver {
 		Map<String, String> map = new HashMap<>();
 		for (AstAttributeValue attribute : array.elements) {
 			if (!(attribute instanceof AstLiteral)) {
-				environment.report(new Diagnostic(Level.ERROR, attribute, "invalid LiteralKind", TARGET_NAME,
-						elementName));
+				environment.report(new Diagnostic(Level.ERROR, attribute, "@{0}({1}) must be a {2} literal",
+						TARGET_NAME, elementName, kind));
 				return null;
 			}
 			AstLiteral literal = (AstLiteral) attribute;
+			if (literal.kind != kind) {
+				environment.report(new Diagnostic(Level.ERROR, literal, "@{0}({1}) must be a array of {2} literal",
+						TARGET_NAME, elementName, kind));
+				return null;
+			}
 			String s = literal.toStringValue();
 			int n = s.indexOf('=');
 			if (n < 0) {
-				environment.report(new Diagnostic(Level.ERROR, literal, "invalid =", TARGET_NAME, elementName));
+				environment.report(new Diagnostic(Level.ERROR, literal, "@{0}({1}) must be a \"key=value\" literal",
+						TARGET_NAME, elementName));
 				return null;
 			}
 			String key = s.substring(0, n).trim();
