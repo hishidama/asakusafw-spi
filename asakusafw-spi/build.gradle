@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+
+defaultTasks 'jar'
+
+group = 'jp.hishidama.asakusafw'
+version = '0.0.1'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+def defaultEncoding = 'UTF-8'
+[compileJava, compileTestJava]*.options*.encoding = defaultEncoding
+
+repositories {
+    mavenCentral()
+    maven { url 'http://asakusafw.s3.amazonaws.com/maven/releases' }
+}
+
+dependencies {
+    compile group: 'com.asakusafw', name: 'asakusa-dmdl-java', version: "0.7.3-hadoop1"
+    compile group: 'org.apache.hadoop', name: 'hadoop-core', version: "1.2.1"
+    compile group: 'org.freemarker', name : 'freemarker', version: '2.3.23'
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion '2.2.1'
+  jarFile file('.buildtools/gradlew.jar')
+}
+
+eclipse.classpath.file {
+        whenMerged { classpath ->
+                classpath.entries.findAll { entry -> entry.kind == 'output' }*.path = 'classes'
+        }
+}

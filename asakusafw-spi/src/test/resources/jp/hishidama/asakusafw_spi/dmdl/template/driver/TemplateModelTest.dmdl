@@ -1,0 +1,20 @@
+"サンプル"
+@template(id="test", template="src/test/template/example.ftl", category="tmpl", type_name_pattern="{0}Tmpl", args={ "size=123", "size3=456" })
+@template(id="fromCsv", template="src/test/template/FromCsv.ftl", category="csv", type_name_pattern="{0}FromCSV", args={ "dataSize=LARGE" })
+@template(id="toCsv", template="src/test/template/ToCsv.ftl", category="csv", type_name_pattern="{0}ToCSV")
+example = {
+
+  "値1"
+  @template.field(role = "key")
+  value1 : TEXT;
+
+  "値2"
+  value2 : INT;
+} + example3;
+
+example3 = {
+
+  "値3"
+  @template.field(role = "key")
+  value3 : LONG;
+};
