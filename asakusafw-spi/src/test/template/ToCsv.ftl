@@ -1,5 +1,11 @@
 package ${packageName};
 
+<#assign keys = model.roleProperties("key")>
+<#if keys?has_content>
+import java.util.Arrays;
+import java.util.List;
+</#if>
+
 /**
  * ${model.description!""}
  */
@@ -14,7 +20,6 @@ public class ${className} extends Abstract${model.camelName}CsvOutputDescription
     public String getResourcePattern() {
         return "${model.name}.csv";
     }
-<#assign keys = model.roleProperties("key")>
 <#if keys?has_content>
 
     @Override
