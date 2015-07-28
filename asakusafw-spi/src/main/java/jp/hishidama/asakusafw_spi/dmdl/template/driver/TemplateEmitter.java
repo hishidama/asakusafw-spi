@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import jp.hishidama.asakusafw_spi.dmdl.template.driver.TemplateModelTrait.Configuration;
 import jp.hishidama.asakusafw_spi.dmdl.template.spi.TemplateGenerator;
-import sun.misc.Service;
 
 import com.asakusafw.dmdl.Region;
 import com.asakusafw.dmdl.java.emitter.EmitContext;
@@ -63,11 +63,11 @@ public class TemplateEmitter extends JavaDataModelDriver {
 
 	private List<TemplateGenerator> generatorList;
 
-	@SuppressWarnings("unchecked")
 	private List<TemplateGenerator> getGenerators() {
 		if (generatorList == null) {
 			generatorList = new ArrayList<>();
-			for (Iterator<TemplateGenerator> i = Service.providers(TemplateGenerator.class); i.hasNext();) {
+			ServiceLoader<TemplateGenerator> loader = ServiceLoader.load(TemplateGenerator.class);
+			for (Iterator<TemplateGenerator> i = loader.iterator(); i.hasNext();) {
 				generatorList.add(i.next());
 			}
 		}
