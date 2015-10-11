@@ -36,3 +36,11 @@ eclipse.classpath.file {
                 classpath.entries.findAll { entry -> entry.kind == 'output' }*.path = 'classes'
         }
 }
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file:///tmp/asakusafw-spi-site")
+        }
+    }
+}
