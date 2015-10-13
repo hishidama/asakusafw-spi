@@ -12,7 +12,7 @@ Asakusaプロジェクトのbuild.gradleに以下のようなリポジトリー�
 .. sourcecode:: gradle
 
  repositories {
-     maven { url 'http://hishidama.github.io/asakusafw-spi/' }
+     maven { url 'http://hishidama.github.io/mvnrepository' }
  }
  
  dependencies {
