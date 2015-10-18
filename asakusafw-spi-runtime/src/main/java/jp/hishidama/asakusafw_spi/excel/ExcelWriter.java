@@ -106,9 +106,7 @@ public abstract class ExcelWriter<T> implements ModelOutput<T> {
 	 * @param workbook
 	 *            ワークブック
 	 */
-	protected void initializeWorkbook(Workbook workbook) {
-		workbook.createSheet("Sheet1");
-	}
+	protected abstract void initializeWorkbook(Workbook workbook);
 
 	@Override
 	public void write(T object) throws IOException {
@@ -128,6 +126,15 @@ public abstract class ExcelWriter<T> implements ModelOutput<T> {
 		emit(row, object);
 	}
 
+	/**
+	 * データモデル出力先のシート選択.
+	 * 
+	 * @param workbook
+	 *            ワークブック
+	 * @param object
+	 *            データモデル
+	 * @return 出力先シート
+	 */
 	protected Sheet selectSheet(Workbook workbook, T object) {
 		return workbook.getSheetAt(0); // do override
 	}

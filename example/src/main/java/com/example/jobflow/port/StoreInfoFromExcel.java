@@ -24,27 +24,31 @@ import com.example.modelgen.dmdl.model.StoreInfo;
  * 店舗マスタをDirect I/Oで入力する。
  * 入力ファイルは {@code master} 上の {@code store_info.xls}。
  */
-public class StoreInfoFromExcel  extends DirectFileInputDescription {
-    @Override public Class<?> getModelType() {
-        return StoreInfo.class;
-    }
-    @Override public Class<? extends DataFormat<?>> getFormat() {
-        return StoreInfoExcelFormat.class;
-    }
+public class StoreInfoFromExcel extends DirectFileInputDescription {
+	@Override
+	public Class<?> getModelType() {
+		return StoreInfo.class;
+	}
 
-    @Override
-    public String getBasePath() {
-        return "master";
-    }
+	@Override
+	public Class<? extends DataFormat<?>> getFormat() {
+		// Excel用のDataFormat
+		return StoreInfoExcelFormat.class;
+	}
 
-    @Override
-    public String getResourcePattern() {
-        return "store_info.xls";
-    }
+	@Override
+	public String getBasePath() {
+		return "master";
+	}
 
-    @Override
-    public DataSize getDataSize() {
-        // 店舗マスタは小さい前提
-        return DataSize.TINY;
-    }
+	@Override
+	public String getResourcePattern() {
+		return "store_info.xls";
+	}
+
+	@Override
+	public DataSize getDataSize() {
+		// 店舗マスタは小さい前提
+		return DataSize.TINY;
+	}
 }

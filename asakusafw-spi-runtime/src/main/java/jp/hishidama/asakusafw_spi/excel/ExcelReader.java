@@ -133,6 +133,15 @@ public abstract class ExcelReader<T> implements ModelInput<T> {
 		return 0; // do override
 	}
 
+	/**
+	 * データモデルに値を埋める.
+	 * 
+	 * @param row
+	 *            Excelの行データ
+	 * @param object
+	 *            データモデル
+	 * @return 正常にデータモデルに値を設定したときtrue。データを破棄（スキップ）する場合はfalse。
+	 */
 	protected abstract boolean fillTo(Row row, T object);
 
 	protected final void fill(Row row, int columnIndex, BooleanOption option) {

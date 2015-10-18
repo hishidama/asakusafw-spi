@@ -25,7 +25,7 @@ import com.example.modelgen.dmdl.model.CategorySummary;
 
 /**
  * カテゴリ別集計結果をDirect I/Oで出力する。 
- * 出力ファイルは {@code result/category} 上の {@code result.csv}。
+ * 出力ファイルは {@code result/category} 上の {@code result.xls}。
  */
 public class CategorySummaryToExcel extends DirectFileOutputDescription {
 	@Override
@@ -35,6 +35,7 @@ public class CategorySummaryToExcel extends DirectFileOutputDescription {
 
 	@Override
 	public Class<? extends DataFormat<?>> getFormat() {
+		// Excel用のDataFormat
 		return CategorySummaryExcelFormat.class;
 	}
 
