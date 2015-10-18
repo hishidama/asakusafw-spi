@@ -326,6 +326,6 @@ public abstract class ExcelReader<T> implements ModelInput<T> {
 
 	@Override
 	public void close() throws IOException {
-		// do nothing
+		workbook.close();
 	}
 }
