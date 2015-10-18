@@ -22,9 +22,12 @@ Direct I/OでExcelファイルを読み書きするImporter/ExporterおよびDat
 （使用ライブラリー： `asakusafw-spi-runtime` ）
 
 * store_info
+
   * src/main/java/ `com.example.jobflow.port.StoreInfoFromExcel`
   * src/main/java/ `com.example.jobflow.format.StoreInfoExcelFormat`
+
 * category_summary
+
   * src/main/java/ `com.example.jobflow.port.CategorySummaryToExcel`
   * src/main/java/ `com.example.jobflow.format.CategorySummaryExcelFormat` …出力する際に、テンプレートとなるExcelファイルを使用する
   * src/main/resources/com/example/jobflow/format/ `category_summary.xls`
