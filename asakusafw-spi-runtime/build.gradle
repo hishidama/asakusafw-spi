@@ -23,7 +23,9 @@ dependencies {
     compile group: 'com.asakusafw', name: 'asakusa-dmdl-java', version: "0.7.3-hadoop1"
     compile group: 'org.apache.hadoop', name: 'hadoop-core', version: "1.2.1"
     compile group: 'org.apache.poi', name : 'poi', version: '3.13'
-    compile group: 'org.apache.poi', name : 'poi-ooxml', version: '3.13'
+    compile(group: 'org.apache.poi', name : 'poi-ooxml', version: '3.13') {
+        exclude group: 'stax', module: 'stax-api'
+    }
 
     testCompile group: 'ch.qos.logback', name: 'logback-classic', version: "1.1.3"
 }
