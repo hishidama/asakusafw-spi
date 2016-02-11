@@ -49,9 +49,8 @@ public abstract class ExcelWriter<T> implements ModelOutput<T> {
 	}
 
 	protected Workbook createWorkbook() throws IOException {
-		String templateFileName = getTemplateExcelFile();
-		if (templateFileName != null) {
-			try (InputStream is = getClass().getResourceAsStream(templateFileName)) {
+		try (InputStream is = getTemplateExcelInputStream()) {
+			if (is != null) {
 				try {
 					return WorkbookFactory.create(is);
 				} catch (EncryptedDocumentException | InvalidFormatException e) {
@@ -71,6 +70,29 @@ public abstract class ExcelWriter<T> implements ModelOutput<T> {
 		}
 	}
 
+	protected InputStream getTemplateExcelInputStream() throws IOException {
+		String templateFileName = getTemplateExcelFile();
+		if (templateFileName == null) {
+			return null;
+		}
+
+		InputStream is = getClass().getResourceAsStream(templateFileName);
+		if (is != null) {
+			return is;
+		}
+
+		String path;
+		{
+			Package pack = getClass().getPackage();
+			if (pack != null) {
+				path = pack.getName().replace('.', '/') + "/" + templateFileName;
+			} else {
+				path = templateFileName;
+			}
+		}
+		throw new IOException(MessageFormat.format("templateExcelFile not found. file={0}", path));
+	}
+
 	/**
 	 * テンプレートExcelファイル取得.
 	 * <p>
@@ -81,7 +103,7 @@ public abstract class ExcelWriter<T> implements ModelOutput<T> {
 	 * @see Class#getResourceAsStream(String)
 	 */
 	protected String getTemplateExcelFile() {
-		return null;
+		return null; // do override
 	}
 
 	/**
@@ -94,7 +116,7 @@ public abstract class ExcelWriter<T> implements ModelOutput<T> {
 	 * @see #getTemplateExcelFile()
 	 */
 	protected SpreadsheetVersion getSpreadsheetVersion() {
-		return SpreadsheetVersion.EXCEL2007;
+		return SpreadsheetVersion.EXCEL2007; // do override
 	}
 
 	/**
