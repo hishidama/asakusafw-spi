@@ -188,134 +188,209 @@ public abstract class ExcelWriter<T> implements ModelOutput<T> {
 
 	protected abstract void emit(Row row, T object);
 
+	protected void emitBlank(Row row, int columnIndex, Cell cell) {
+		cell.setCellType(Cell.CELL_TYPE_BLANK);
+		decorate(row, columnIndex, cell);
+	}
+
 	protected void emit(Row row, int columnIndex, BooleanOption option) {
 		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+			emitBlank(row, columnIndex, CellUtil.getCell(row, columnIndex));
 			return;
 		}
+		emit(row, columnIndex, option.get());
+	}
+
+	protected void emit(Row row, int columnIndex, boolean value) {
 		Cell cell = CellUtil.getCell(row, columnIndex);
-		cell.setCellValue(option.get());
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, boolean value) {
+		cell.setCellValue(value);
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, ByteOption option) {
 		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+			emitBlank(row, columnIndex, CellUtil.getCell(row, columnIndex));
 			return;
 		}
+		emit(row, columnIndex, option.get());
+	}
+
+	protected void emit(Row row, int columnIndex, byte value) {
 		Cell cell = CellUtil.getCell(row, columnIndex);
-		cell.setCellValue(option.get());
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, byte value) {
+		cell.setCellValue(value);
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, ShortOption option) {
 		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+			emitBlank(row, columnIndex, CellUtil.getCell(row, columnIndex));
 			return;
 		}
+		emit(row, columnIndex, option.get());
+	}
+
+	protected void emit(Row row, int columnIndex, short value) {
 		Cell cell = CellUtil.getCell(row, columnIndex);
-		cell.setCellValue(option.get());
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, short value) {
+		cell.setCellValue(value);
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, IntOption option) {
 		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+			emitBlank(row, columnIndex, CellUtil.getCell(row, columnIndex));
 			return;
 		}
+		emit(row, columnIndex, option.get());
+	}
+
+	protected void emit(Row row, int columnIndex, int value) {
 		Cell cell = CellUtil.getCell(row, columnIndex);
-		cell.setCellValue(option.get());
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, int value) {
+		cell.setCellValue(value);
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, LongOption option) {
 		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+			emitBlank(row, columnIndex, CellUtil.getCell(row, columnIndex));
 			return;
 		}
+		emit(row, columnIndex, option.get());
+	}
+
+	protected void emit(Row row, int columnIndex, long value) {
 		Cell cell = CellUtil.getCell(row, columnIndex);
-		cell.setCellValue(option.get());
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, long value) {
+		cell.setCellValue(value);
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, FloatOption option) {
 		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+			emitBlank(row, columnIndex, CellUtil.getCell(row, columnIndex));
 			return;
 		}
+		emit(row, columnIndex, option.get());
+	}
+
+	protected void emit(Row row, int columnIndex, float value) {
 		Cell cell = CellUtil.getCell(row, columnIndex);
-		cell.setCellValue(option.get());
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, float value) {
+		cell.setCellValue(value);
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, DoubleOption option) {
 		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+			emitBlank(row, columnIndex, CellUtil.getCell(row, columnIndex));
 			return;
 		}
+		emit(row, columnIndex, option.get());
+	}
+
+	protected void emit(Row row, int columnIndex, double value) {
 		Cell cell = CellUtil.getCell(row, columnIndex);
-		cell.setCellValue(option.get());
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, double value) {
+		cell.setCellValue(value);
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, DecimalOption option) {
-		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+		emit(row, columnIndex, option.or(null));
+	}
+
+	protected void emit(Row row, int columnIndex, BigDecimal value) {
+		Cell cell = CellUtil.getCell(row, columnIndex);
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, BigDecimal value) {
+		if (value == null) {
+			emitBlank(row, columnIndex, cell);
 			return;
 		}
-		Cell cell = CellUtil.getCell(row, columnIndex);
-		BigDecimal d = option.get();
-		String s = d.toPlainString();
-		if (s.endsWith(".0")) {
-			s = s.substring(0, s.length() - 2);
-		}
-		cell.setCellValue(s);
+		cell.setCellValue(value.doubleValue());
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, StringOption option) {
-		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+		emit(row, columnIndex, option.or((String) null));
+	}
+
+	protected void emit(Row row, int columnIndex, String value) {
+		Cell cell = CellUtil.getCell(row, columnIndex);
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, String value) {
+		if (value == null) {
+			emitBlank(row, columnIndex, cell);
 			return;
 		}
-		Cell cell = CellUtil.getCell(row, columnIndex);
-		cell.setCellValue(option.getAsString());
+		cell.setCellValue(value);
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, DateOption option) {
-		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+		emit(row, columnIndex, option.or(null));
+	}
+
+	protected void emit(Row row, int columnIndex, Date value) {
+		Cell cell = CellUtil.getCell(row, columnIndex);
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, Date value) {
+		if (value == null) {
+			emitBlank(row, columnIndex, cell);
 			return;
 		}
-		Cell cell = CellUtil.getCell(row, columnIndex);
-		Date d = option.get();
 		Calendar cal = Calendar.getInstance();
-		DateUtil.setDayToCalendar(d.getElapsedDays(), cal);
+		DateUtil.setDayToCalendar(value.getElapsedDays(), cal);
 		cell.setCellValue(cal);
 		decorate(row, columnIndex, cell);
 	}
 
 	protected void emit(Row row, int columnIndex, DateTimeOption option) {
-		if (option.isNull()) {
-			Cell cell = row.getCell(columnIndex);
-			decorate(row, columnIndex, cell);
+		emit(row, columnIndex, option.or(null));
+	}
+
+	protected void emit(Row row, int columnIndex, DateTime value) {
+		Cell cell = CellUtil.getCell(row, columnIndex);
+		emit(row, columnIndex, cell, value);
+	}
+
+	protected void emit(Row row, int columnIndex, Cell cell, DateTime value) {
+		if (value == null) {
+			emitBlank(row, columnIndex, cell);
 			return;
 		}
-		Cell cell = CellUtil.getCell(row, columnIndex);
-		DateTime dt = option.get();
 		Calendar cal = Calendar.getInstance();
-		DateUtil.setSecondToCalendar(dt.getElapsedSeconds(), cal);
+		DateUtil.setSecondToCalendar(value.getElapsedSeconds(), cal);
 		cell.setCellValue(cal);
 		decorate(row, columnIndex, cell);
 	}
