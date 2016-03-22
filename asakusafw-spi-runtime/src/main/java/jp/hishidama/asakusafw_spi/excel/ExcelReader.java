@@ -11,6 +11,7 @@ import jp.hishidama.asakusafw_spi.excel.reader.ExcelBooleanOptionFiller;
 import jp.hishidama.asakusafw_spi.excel.reader.ExcelByteOptionFiller;
 import jp.hishidama.asakusafw_spi.excel.reader.ExcelDateOptionFiller;
 import jp.hishidama.asakusafw_spi.excel.reader.ExcelDateTimeOptionFiller;
+import jp.hishidama.asakusafw_spi.excel.reader.ExcelDecimalOptionFiller;
 import jp.hishidama.asakusafw_spi.excel.reader.ExcelDoubleOptionFiller;
 import jp.hishidama.asakusafw_spi.excel.reader.ExcelFloatOptionFiller;
 import jp.hishidama.asakusafw_spi.excel.reader.ExcelIntOptionFiller;
@@ -31,6 +32,7 @@ import com.asakusafw.runtime.value.BooleanOption;
 import com.asakusafw.runtime.value.ByteOption;
 import com.asakusafw.runtime.value.DateOption;
 import com.asakusafw.runtime.value.DateTimeOption;
+import com.asakusafw.runtime.value.DecimalOption;
 import com.asakusafw.runtime.value.DoubleOption;
 import com.asakusafw.runtime.value.FloatOption;
 import com.asakusafw.runtime.value.IntOption;
@@ -268,6 +270,24 @@ public abstract class ExcelReader<T> implements ModelInput<T> {
 
 	protected ExcelDoubleOptionFiller createDoubleOptionFiller(int columnIndex) {
 		return new ExcelDoubleOptionFiller();
+	}
+
+	protected final void fill(Row row, int columnIndex, DecimalOption option) {
+		Cell cell = row.getCell(columnIndex);
+		ExcelDecimalOptionFiller filler = excelDecimalOptionFillers.get(columnIndex);
+		filler.fill(cell, option);
+	}
+
+	private final ExcelValueOptionFillerFactory<ExcelDecimalOptionFiller> excelDecimalOptionFillers = new ExcelValueOptionFillerFactory<ExcelDecimalOptionFiller>() {
+
+		@Override
+		protected ExcelDecimalOptionFiller createFiller(int index) {
+			return createDecimalOptionFiller(index);
+		}
+	};
+
+	protected ExcelDecimalOptionFiller createDecimalOptionFiller(int columnIndex) {
+		return new ExcelDecimalOptionFiller();
 	}
 
 	protected final void fill(Row row, int columnIndex, StringOption option) {
