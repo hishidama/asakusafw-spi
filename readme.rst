@@ -17,7 +17,10 @@ Asakusaプロジェクトのbuild.gradleに以下のようなリポジトリー�
  
  dependencies {
  ～
-     compile group: 'jp.hishidama.asakusafw', name: 'asakusafw-spi', version: '0.+'
+     compile(group: 'jp.hishidama.asakusafw', name: 'asakusafw-spi', version: '0.+') {
+         exclude group: 'com.asakusafw'
+         exclude group: 'org.apache.hadoop'
+     }
  ～
  }
 
@@ -36,7 +39,7 @@ DMDLファイル（dmdl）
      id = "fromCsv",
      template = "src/main/template/FromCsv.ftl",
      category = "csv",
-     type_name_pattern = "{0}FromCSV",
+     type_name_pattern = "{0}FromCsv",
      args = { "dataSize=LARGE" }
    )
    example1 = {
@@ -92,7 +95,7 @@ DMDLファイル（dmdl）
    /**
     * サンプル
     */
-   public class Example1FromCSV extends AbstractExample1CsvInputDescription {
+   public class Example1FromCsv extends AbstractExample1CsvInputDescription {
    
        @Override
        public String getBasePath() {
